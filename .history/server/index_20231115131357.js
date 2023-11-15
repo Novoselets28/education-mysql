@@ -60,10 +60,6 @@ app.put("/tasks/:id", (req, res)=>{
         req.body.title,
     ]
 
-    if (!title) {
-        return res.status(400).json({ error: "Title cannot be empty" });
-    }
-
     db.query(q,[...values, taskId], (err, data)=>{
         if(err) return res.json(err)
         return res.json("task updated")

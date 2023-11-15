@@ -26,22 +26,16 @@ app.get("/tasks", (req, res)=>{
     })
 })
 
-app.post("/tasks", (req, res) => {
-    const title = req.body.title;
-
-    if (!title) {
-        return res.status(400).json({ error: "Title cannot be empty" });
-    }
-
-    const q = "INSERT INTO tasks (`title`) VALUES (?)";
-    const values = [title];
-
-    db.query(q, values, (err, data) => {
-        if (err) return res.json(err);
-        return res.json("task created");
-    });
-});
-
+app.post("/tasks", (req, res)=>{
+    const q = "INSERT INTO tasks (`title`) VALUES (?)"
+    const values = [
+        req.body.title,
+    ]
+    db.query(q, [values], (err, data)=>{
+        if(err) return res.json(err)
+        return res.json("task created")
+    })
+})
 
 app.delete("/tasks/:id", (req, res)=>{
     const taskId = req.params.id;
@@ -50,23 +44,6 @@ app.delete("/tasks/:id", (req, res)=>{
     db.query(q,[taskId], (err, data)=>{
         if(err) return res.json(err)
         return res.json("task deleted")
-    })
-})
-
-app.put("/tasks/:id", (req, res)=>{
-    const taskId = req.params.id;
-    const q = "UPDATE tasks SET `title` = ? WHERE id = ?";
-    const values = [
-        req.body.title,
-    ]
-
-    if (!title) {
-        return res.status(400).json({ error: "Title cannot be empty" });
-    }
-
-    db.query(q,[...values, taskId], (err, data)=>{
-        if(err) return res.json(err)
-        return res.json("task updated")
     })
 })
 

@@ -30,7 +30,7 @@ app.post("/tasks", (req, res) => {
     const title = req.body.title;
 
     if (!title) {
-        return res.status(400).json({ error: "Title cannot be empty" });
+        return res.status(400).json({ error: "Title cannot be empty" }) && <div>Title cannot be empty</div>;
     }
 
     const q = "INSERT INTO tasks (`title`) VALUES (?)";
@@ -59,10 +59,6 @@ app.put("/tasks/:id", (req, res)=>{
     const values = [
         req.body.title,
     ]
-
-    if (!title) {
-        return res.status(400).json({ error: "Title cannot be empty" });
-    }
 
     db.query(q,[...values, taskId], (err, data)=>{
         if(err) return res.json(err)
